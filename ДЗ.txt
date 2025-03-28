@@ -1,0 +1,180 @@
+model.py
+import json
+
+class ContactNotFoundError(Exception):
+    pass
+
+class InvalidContactDataError(Exception):
+    pass
+
+class AddressBook:
+    def __init__(self, filename):
+        self.filename = filename
+        try:
+            with open(self.filename, 'r') as file:
+                self.contacts = json.load(file)
+        except FileNotFoundError:
+            self.contacts = {}
+
+    def save(self):
+        with open(self.filename, 'w') as file:
+            json.dump(self.contacts, file, indent=4)
+
+    def find_by_name_or_phone(self, query):
+        results = []
+        for contact in self.contacts.values():
+            if query.lower() in contact['name'].lower() or query in contact['phone']:
+                results.append(contact)
+        return results
+
+    def add_contact(self, name, phone, desc):
+        new_id = str(len(self.contacts) + 1)
+        self.contacts[new_id] = {'name': name, 'phone': phone, 'desc': desc}
+        self.save()
+
+    def remove_by_name_or_phone(self, query):
+        removed_contacts = []
+        for id, contact in list(self.contacts.items()):
+            if query.lower() in contact['name'].lower() or query in contact['phone']:
+                removed_contacts.append(contact)
+                del self.contacts[id]
+        self.save()
+        return removed_contacts
+
+    def update_contact_by_name_or_phone(self, query, new_name=None, new_phone=None, new_desc=None):
+        updated_contacts = []
+        for id, contact in self.contacts.items():
+            if query.lower() in contact['name'].lower() or query in contact['phone']:
+                if new_name:
+                    contact['name'] = new_name
+                if new_phone:
+                    contact['phone'] = new_phone
+                if new_desc:
+                    contact['desc'] = new_desc
+                updated_contacts.append(contact)
+        self.save()
+        return updated_contacts
+		
+view.py
+
+def print_menu():
+    print("\nТелефонный справочник")
+    print("1. Поиск по имени или телефону")
+    print("2. Добавление контакта")
+    print("3. Удаление контакта по имени или телефону")
+    print("4. Обновление контакта по имени или телефону")
+    print("5. Выход")
+
+def get_choice():
+    while True:
+        try:
+            choice = int(input("Введите номер действия: "))
+            if 1 <= choice <= 5:
+                return choice
+            else:
+                print("Неверный выбор. Пожалуйста, выберите от 1 до 5.")
+        except ValueError:
+            print("Некорректный ввод. Пожалуйста, введите число.")
+
+def get_query():
+    return input("Введите имя или телефон для поиска/удаления/обновления: ")
+
+def get_contact_details():
+    name = input("Введите имя: ")
+    phone = input("Введите телефон: ")
+    desc = input("Введите описание: ")
+    return name, phone, desc
+
+def display_contacts(contacts):
+    if not contacts:
+        print("Контакты не найдены.")
+    else:
+        for contact in contacts:
+            print(f"ID: {contact['id']}, Имя: {contact['name']}, Телефон: {contact['phone']}, Описание: {contact['desc']}")
+
+def display_error(message):
+    print(f"Ошибка: {message}")
+
+def confirm_update():
+    return input("Вы уверены, что хотите обновить этот контакт? (yes/no): ").lower() == 'yes'
+
+def get_new_contact_details(current_contact):
+    name = input(f"Введите новое имя ({current_contact['name']}): ")
+    phone = input(f"Введите новый телефон ({current_contact['phone']}): ")
+    desc = input(f"Введите новое описание ({current_contact['desc']}): ")
+    return name, phone, desc
+
+	
+controller.py
+
+from model import AddressBook, ContactNotFoundError, InvalidContactDataError
+from view import print_menu, get_choice, get_query, get_contact_details, display_contacts, display_error, confirm_update, get_new_contact_details
+
+class PhonebookController:
+    def __init__(self, filename):
+        self.address_book = AddressBook(filename)
+
+    def run(self):
+        while True:
+            print_menu()
+            choice = get_choice()
+
+            if choice == 1:
+                query = get_query()
+                try:
+                    results = self.address_book.find_by_name_or_phone(query)
+                    display_contacts(results)
+                except Exception as e:
+                    display_error(str(e))
+
+            elif choice == 2:
+                name, phone, desc = get_contact_details()
+                try:
+                    self.address_book.add_contact(name, phone, desc)
+                    print("Контакт успешно добавлен.")
+                except InvalidContactDataError as e:
+                    display_error(str(e))
+
+            elif choice == 3:
+                query = get_query()
+                try:
+                    removed_contacts = self.address_book.remove_by_name_or_phone(query)
+                    if removed_contacts:
+                        print("Найденные и удалённые контакты:")
+                        display_contacts(removed_contacts)
+                    else:
+                        print("Контакты не найдены.")
+                except Exception as e:
+                    display_error(str(e))
+
+            elif choice == 4:
+                query = get_query()
+                try:
+                    results = self.address_book.find_by_name_or_phone(query)
+                    if results:
+                        for contact in results:
+                            print(f"Найденный контакт: ID: {contact['id']}, Имя: {contact['name']}, Телефон: {contact['phone']}, Описание: {contact['desc']}")
+                            if confirm_update():
+                                new_name, new_phone, new_desc = get_new_contact_details(contact)
+                                self.address_book.update_contact_by_name_or_phone(query, new_name, new_phone, new_desc)
+                                print("Контакт успешно обновлен.")
+                    else:
+                        print("Контакты не найдены.")
+                except Exception as e:
+                    display_error(str(e))
+
+            elif choice == 5:
+                break
+
+				
+main.py
+
+from controller import PhonebookController
+
+def main():
+    filename = 'contacts.json'
+    controller = PhonebookController(filename)
+    controller.run()
+
+if __name__ == '__main__':
+    main()
