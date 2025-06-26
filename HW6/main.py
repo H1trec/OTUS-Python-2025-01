@@ -9,7 +9,7 @@ from jsonplaceholder_requests import get_users, get_posts
 Session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 async def load_and_save_users(session, users_data):
-    """Загружает и сохраняет пользователей."""
+    """Загрузка и сохранение пользователей."""
     users = []
     for user in users_data:
         filtered_user = {
@@ -22,7 +22,7 @@ async def load_and_save_users(session, users_data):
     await session.commit()
 
 async def load_and_save_posts(session, posts_data):
-    """Загружает и сохраняет посты в правильном порядке."""
+    """Загрузка и сохранение постов в правильном порядке."""
     posts = []
     for post in posts_data:
         filtered_post = {
@@ -37,7 +37,7 @@ async def load_and_save_posts(session, posts_data):
     await session.commit()
 
 async def check_tables_exist(engine):
-    """Проверяет наличие таблиц в базе данных."""
+    """Проверка наличия таблиц в базе данных."""
     async with engine.begin() as connection:
         def sync_get_table_names(connection):
             ins = inspect(connection)
