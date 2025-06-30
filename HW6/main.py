@@ -13,6 +13,7 @@ async def load_and_save_users(session, users_data):
     users = []
     for user in users_data:
         filtered_user = {
+            "id": user["id"],
             "name": user["name"],
             "username": user["username"],
             "email": user["email"]
@@ -27,6 +28,7 @@ async def load_and_save_posts(session, posts_data):
     for post in posts_data:
         filtered_post = {
             "user_id": post["userId"],
+            "id": post["id"],
             "title": post["title"],
             "body": post["body"]
         }
