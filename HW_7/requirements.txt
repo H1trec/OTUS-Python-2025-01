@@ -1,0 +1,6 @@
+flask
+gunicorn
+psycopg2-binary
+sqlalchemy
+flask_sqlalchemy
+faker
