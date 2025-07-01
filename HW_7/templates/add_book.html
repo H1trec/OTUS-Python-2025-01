@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить книгу</title>
+</head>
+<body>
+    <form action="/add_book" method="POST">
+        Название книги:<input type="text" name="title"><br>
+        Автор:<input type="text" name="author"><br>
+        Дата начала чтения:<input type="date" name="start_date"><br>
+        Читатель:
+        <select name="reader_id">
+            {% for reader in readers %}
+                <option value="{{ reader.id }}">{{ reader.FIO }}</option>
+            {% endfor %}
+        </select><br>
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <a href="/">Вернуться на главную страницу</a>
+</body>
+</html>
