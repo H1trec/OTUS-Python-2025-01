@@ -1,7 +1,18 @@
 ### Class-Based Views и тестирование
 
 Проект был доработан добавлением Class-Based Views и функцией удаления товаров.
+Список товаров:   
+![LIST](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/list.JPG?raw=true)
+Редактирование товара:   
+![EDIT](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/edit.JPG?raw=true)
+![RESULT_EDIT](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/result.JPG?raw=true)
+Удаление товара:    
+![DELETE](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/del.JPG?raw=true)
+![RESULT_DELETE](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/resultdel.JPG?raw=true)
 
+Добвление товара:   
+![ADD](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/add.JPG?raw=true)
+![RESULT_ADD](https://github.com/H1trec/H1trec-OTUS-NoSQL-2025-01/blob/main/OTUS-Python-2025-01/resultadd.JPG?raw=true)
 
 Тесты:
 ```
