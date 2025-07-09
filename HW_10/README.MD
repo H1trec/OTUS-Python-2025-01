@@ -11,8 +11,8 @@
 ![RESULT_DELETE](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/HW_10/screen/resultdel.JPG?raw=true)
 
 Добвление товара:   
-![ADD](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/OTUS-Python-2025-01/add.JPG?raw=true)
-![RESULT_ADD](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/OTUS-Python-2025-01/resultadd.JPG?raw=true)
+![ADD](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/HW_10/screen/add.JPG?raw=true)
+![RESULT_ADD](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/HW_10/screen/resultadd.JPG?raw=true)
 
 Тесты:
 ```
