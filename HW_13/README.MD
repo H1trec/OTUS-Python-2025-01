@@ -11,4 +11,4 @@
 ![pipline](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/HW_13/pipline.JPG?raw=true)
 ![job](https://github.com/H1trec/OTUS-Python-2025-01/blob/main/HW_13/job.JPG?raw=true)
 
-Файл Pipline: ![filepipline](gitlab-ci.yml)
+Файл Pipline: [filepipline](gitlab-ci.yml)
