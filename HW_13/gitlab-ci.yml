@@ -1,0 +1,41 @@
+stages:
+  - test
+
+variables:
+  POSTGRES_DB: python_db
+  POSTGRES_USER: python_user
+  POSTGRES_PASSWORD: 1234567890
+  POSTGRES_HOST: postgres
+  REDIS_HOST: redis
+  DATABASE_URL: "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB"
+
+services:
+  - postgres:latest
+  - redis:latest
+
+cache:
+  paths:
+    - venv/
+
+# Тестирование
+test:
+  tags:
+    - docker
+  stage: test
+  image: python:3.12
+  before_script:
+    - python -V
+    - pip install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+  script:
+    - python manage.py check
+    - python manage.py migrate
+    - python -m pytest store/tests/ -v
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+      allow_failure: false
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
